@@ -9,10 +9,6 @@ on:
 jobs:
   run-script:
     runs-on: ubuntu-latest
-
-    env:
-      GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -25,6 +21,8 @@ jobs:
           else
             echo "✅ GMAIL_PASSWORD is set!"
           fi
+        env:
+          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
