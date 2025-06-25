@@ -447,7 +447,7 @@ def send_mail(joblist):
 
             password = os.getenv("GMAIL_PASSWORD")
 
-            if not password || not email:
+            if not password or not email:
                 raise ValueError("GMAIL_PASSWORD env variable not set")
 
             smtp.login(email, password)  # 登入寄件者gmail
