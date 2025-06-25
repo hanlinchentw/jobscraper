@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      API_KEY: ${{ secrets.GMAIL_PASSWORD }}
+      GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
 
     steps:
       - name: Checkout repository
