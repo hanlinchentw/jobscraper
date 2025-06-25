@@ -424,8 +424,10 @@ def send_mail(joblist):
     # Create email
     msg = EmailMessage()
     msg['Subject'] = f"Job Scraper – {len(joblist)} New Jobs"
-    msg['From'] = 's3876531@gmail.com'
-    msg['To'] = 's3876531@gmail.com'
+    fromMail = os.getenv("GMAIL_EMAIL")
+    toMail = os.getenv("RECIPIENT_EMAIL")
+    msg['From'] = fromMail
+    msg['To'] = toMail
 
     msg.set_content(plain_text)  # fallback for non-HTML clients
     msg.add_alternative(f"""\
@@ -440,12 +442,15 @@ def send_mail(joblist):
         try:
             smtp.ehlo()  # 驗證SMTP伺服器
             smtp.starttls()  # 建立加密傳輸
+
+            email = os.getenv("GMAIL_EMAIL")
+
             password = os.getenv("GMAIL_PASSWORD")
 
-            if not password:
+            if not password || not email:
                 raise ValueError("GMAIL_PASSWORD env variable not set")
 
-            smtp.login("s3876531@gmail.com", password)  # 登入寄件者gmail
+            smtp.login(email, password)  # 登入寄件者gmail
             smtp.send_message(msg)  # 寄送郵件
             print("Complete send mail!")
         except Exception as e:
