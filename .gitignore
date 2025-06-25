@@ -1,8 +1,6 @@
 # .gitignore
 venv/
 *.csv
-config.json
-config1.json
 test.py
 __pycache__/
 my_env/
