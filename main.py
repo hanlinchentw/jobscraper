@@ -1,3 +1,4 @@
+import os
 import requests
 import json
 import sqlite3
@@ -12,6 +13,124 @@ from urllib.parse import quote
 from langdetect import detect
 from langdetect.lang_detect_exception import LangDetectException
 
+import smtplib
+from email.message import EmailMessage
+from collections import defaultdict
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+import pprint
+import re
+
+def get_google_jobs():
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
+
+    url = ("https://www.google.com/about/careers/applications/jobs/results/"
+           "?category=SOFTWARE_ENGINEERING&jex=ENTRY_LEVEL&target_level=INTERN_AND_APPRENTICE")
+    driver.get(url)
+    tm.sleep(3)  # Wait for JS to load; increase if needed
+
+    soup = BeautifulSoup(driver.page_source, "html.parser")
+    driver.quit()
+
+    joblist = []
+    # Find all <a> with href containing 'jobs/results/'
+    job_links = soup.find_all('a', href=re.compile(r'^jobs/results/'))
+
+    seen_urls = set()  # avoid duplicates
+
+    for link in job_links:
+        href = link.get('href')
+        if not href or href in seen_urls:
+            continue
+        seen_urls.add(href)
+
+        # Extract job title from aria-label or link text
+        aria_label = link.get('aria-label', '')
+        title = aria_label.replace('Learn more about ', '').strip() if aria_label else link.text.strip()
+
+        # Sometimes location is nearby in parent elements; let's try to get it if possible
+        location = ''
+        parent = link.find_parent()
+        if parent:
+            loc_tag = parent.find_next(string=re.compile(r'[A-Za-z\s,]+'))  # naive location guess
+            if loc_tag:
+                location = loc_tag.strip()
+
+        job = {
+            'title': title if title else 'No Title',
+            'company': 'Google',
+            'location': location,
+            'date': datetime.today().strftime("%Y-%m-%d"),
+            'job_url': f"https://www.google.com/{href}",
+            'job_description': '',
+            'applied': 0,
+            'hidden': 0,
+            'interview': 0,
+            'rejected': 0
+        }
+        joblist.append(job)
+
+    print(f"Scraped {len(joblist)} Google job(s)")
+    pprint.pprint(joblist)
+    return joblist
+
+def get_nvidia_intern_jobs():
+    joblist = []
+    # Workday jobs API endpoint for NVIDIA (example)
+    api_url = "https://nvidia.wd5.myworkdayjobs.com/wday/cxs/nvidia/jobs"
+
+    # Typical POST body payload for Workday job search, with filters for internships
+    payload = {
+        "appliedFacets": {
+            "workExperienceLevel": ["Internship"],
+            "jobCategory": [],   # you can add categories here if needed
+        },
+        "limit": 50,
+        "offset": 0,
+        "searchText": "",  # empty for all jobs
+        "includeJobDescriptions": True
+    }
+
+    headers = {
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0",
+    }
+
+    try:
+        response = requests.post(api_url, json=payload, headers=headers)
+        response.raise_for_status()
+        data = response.json()
+
+        # The jobs list may be under 'jobPostings' or similar key; inspect actual response
+        jobs = data.get('jobPostings', [])
+        for job in jobs:
+            # Parse job fields; keys depend on actual API response structure
+            title = job.get('title', 'No Title')
+            location = job.get('locations', [{}])[0].get('name', '')
+            job_id = job.get('id', '')
+            url = f"https://nvidia.wd5.myworkdayjobs.com/wday/cxs/nvidia/jobs/{job_id}"
+
+            joblist.append({
+                'title': title,
+                'company': 'NVIDIA',
+                'location': location,
+                'date': datetime.today().strftime("%Y-%m-%d"),
+                'job_url': url,
+                'job_description': job.get('description', ''),
+                'applied': 0,
+                'hidden': 0,
+                'interview': 0,
+                'rejected': 0,
+            })
+
+        print(f"Scraped {len(joblist)} NVIDIA intern job(s)")
+        return joblist
+
+    except Exception as e:
+        print("Error fetching NVIDIA jobs:", e)
+        return joblist
 
 def load_config(file_name):
     # Load the config file
@@ -260,6 +379,74 @@ def find_new_jobs(all_jobs, conn, config):
     new_joblist = [job for job in all_jobs if not job_exists(jobs_db, job) and not job_exists(filtered_jobs_db, job)]
     return new_joblist
 
+def send_mail(joblist):
+    if not joblist:
+        plain_text = "No new jobs found today."
+        html_content = "<p>No new jobs found today.</p>"
+    else:
+        groups = defaultdict(list)
+        for job in joblist:
+            domain = ''
+            if 'linkedin.com' in job['job_url']:
+                domain = 'LinkedIn'
+            elif 'google.com' in job['job_url']:
+                domain = 'Google Careers'
+            elif 'apple.com' in job['job_url']:
+                domain = 'Apple Careers'
+            elif 'nvidia.com' in job['job_url'] or 'nvidia.wd5.myworkdayjobs.com' in job['job_url']:
+                domain = 'NVIDIA Careers'
+            else:
+                domain = job.get('company', 'Other')
+            groups[domain].append(job)
+
+        plain_text = f"{sum(len(jobs) for jobs in groups.values())} new job(s) found:\n\n"
+        html_content = f"<h2>{sum(len(jobs) for jobs in groups.values())} New Job(s) Found</h2>"
+
+        for source, jobs in groups.items():
+            plain_text += f"== {source} ({len(jobs)} job(s)) ==\n"
+            html_content += f"<h3>{source} ({len(jobs)} job{'s' if len(jobs) > 1 else ''})</h3><ul>"
+
+            for i, job in enumerate(jobs, 1):
+                plain_text += (
+                    f"{i}. {job['title']} at {job['company']}\n"
+                    f"   Location: {job['location']}\n"
+                    f"   Date: {job['date']}\n"
+                    f"   Link: {job['job_url']}\n\n"
+                )
+                html_content += (
+                    f"<li><strong>{job['title']}</strong> at {job['company']}<br>"
+                    f"<em>{job['location']} – {job['date']}</em><br>"
+                    f"<a href='{job['job_url']}'>View Job</a></li><br>"
+                )
+
+            html_content += "</ul>"
+
+    # Create email
+    msg = EmailMessage()
+    msg['Subject'] = f"Job Scraper – {len(joblist)} New Jobs"
+    msg['From'] = 's3876531@gmail.com'
+    msg['To'] = 's3876531@gmail.com'
+
+    msg.set_content(plain_text)  # fallback for non-HTML clients
+    msg.add_alternative(f"""\
+    <html>
+        <body>
+            {html_content}
+        </body>
+    </html>
+    """, subtype='html')
+
+    with smtplib.SMTP(host="smtp.gmail.com", port="587") as smtp:  # 設定SMTP伺服器
+        try:
+            smtp.ehlo()  # 驗證SMTP伺服器
+            smtp.starttls()  # 建立加密傳輸
+            password = os.getenv("GMAIL_PASSWORD")
+            smtp.login("s3876531@gmail.com", password)  # 登入寄件者gmail
+            smtp.send_message(msg)  # 寄送郵件
+            print("Complete!")
+        except Exception as e:
+            print("Error message: ", e)
+
 def main(config_file):
     start_time = tm.perf_counter()
     job_list = []
@@ -269,10 +456,15 @@ def main(config_file):
     filtered_jobs_tablename = config['filtered_jobs_tablename'] # name of the table to store the jobs that have been filtered out based on description keywords (so that in future they are not scraped again)
     #Scrape search results page and get job cards. This step might take a while based on the number of pages and search queries.
     all_jobs = get_jobcards(config)
+
+    google_jobs = get_google_jobs()
+    all_jobs += google_jobs
+
     conn = create_connection(config)
     #filtering out jobs that are already in the database
     all_jobs = find_new_jobs(all_jobs, conn, config)
     print ("Total new jobs found after comparing to the database: ", len(all_jobs))
+    send_mail(all_jobs)
 
     if len(all_jobs) > 0:
 
@@ -300,8 +492,7 @@ def main(config_file):
         df['date_loaded'] = datetime.now()
         df_filtered['date_loaded'] = datetime.now()
         df['date_loaded'] = df['date_loaded'].astype(str)
-        df_filtered['date_loaded'] = df_filtered['date_loaded'].astype(str)        
-        
+        df_filtered['date_loaded'] = df_filtered['date_loaded'].astype(str)
         if conn is not None:
             #Update or Create the database table for the job list
             if table_exists(conn, jobs_tablename):
@@ -327,8 +518,6 @@ def main(config_file):
 
 
 if __name__ == "__main__":
-    config_file = 'config.json'  # default config file
-    if len(sys.argv) == 2:
-        config_file = sys.argv[1]
-        
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    config_file = os.path.join(script_dir, "config.json")
     main(config_file)
