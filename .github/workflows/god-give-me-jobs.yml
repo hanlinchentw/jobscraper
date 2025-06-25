@@ -5,24 +5,13 @@ on:
     branches: [main]     # Trigger on push to main
   schedule:
     - cron: '0 * * * *'  # Trigger every hour (UTC)
-
+          
 jobs:
   run-script:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Check GMAIL_PASSWORD availability
-        run: |
-          if [ -z "${GMAIL_PASSWORD}" ]; then
-            echo "❌ GMAIL_PASSWORD is NOT set!"
-            exit 1
-          else
-            echo "✅ GMAIL_PASSWORD is set!"
-          fi
-        env:
-          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
