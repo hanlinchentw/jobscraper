@@ -441,9 +441,13 @@ def send_mail(joblist):
             smtp.ehlo()  # 驗證SMTP伺服器
             smtp.starttls()  # 建立加密傳輸
             password = os.getenv("GMAIL_PASSWORD")
+
+            if not password:
+                raise ValueError("GMAIL_PASSWORD env variable not set")
+
             smtp.login("s3876531@gmail.com", password)  # 登入寄件者gmail
             smtp.send_message(msg)  # 寄送郵件
-            print("Complete!")
+            print("Complete send mail!")
         except Exception as e:
             print("Error message: ", e)
 
