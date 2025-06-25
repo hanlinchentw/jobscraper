@@ -1,110 +1,133 @@
-# UPDATE August 2023.
+# JobScraper - Enhanced Fork
 
-New version includes OpenAI integration for cover letter generation. See below for how to configure config.json file.
+A Python-based job scraping tool that collects job listings from multiple sources and sends automated email notifications. This is an enhanced fork of [cwwmbm/linkedinscraper](https://github.com/cwwmbm/linkedinscraper) with additional features for Google job search scraping and email notifications.
 
-## LinkedIn Job Scraper
+## ✨ New Features Added
 
-This is a Python application that scrapes job postings from LinkedIn and stores them in a SQLite database. The application also provides a web interface to view the job postings and mark them as applied, rejected,interview, and hidden.
-![Screenshot image](./screenshot/screenshot1.png)
+- **Google Career Scraping**: Extract job listings directly from Google's job search results
+- **Email Notifications**: Automated email alerts for new job postings
+- **GitHub Actions Integration**: Automated daily/hourly job scraping runs
 
-### Problem
+## 🚀 Features
 
-If you spent any amount of time looking for jobs on LinkedIn you know how frustrating it is. The same job postings keep showing up in your search results, and you have to scroll through pages and pages of irrelevant job postings to find the ones that are relevant to you, only to see the ones you applied for weeks ago. This application aims to solve this problem by scraping job postings from LinkedIn and storing them in a SQLite database. You can filter out job postings based on keywords in Title and Description (tired of seeing Clinical QA Manager when you search for software QA jobs? Just filter out jobs that have "clinical" in the title). The jobs are sorted by date posted, not by what LinkedIn thinks is relevant to you. No sponsored job posts. No duplicate job posts. No irrelevant job posts. Just the jobs you want to see.
+- Scrape job listings from multiple job boards
+- Google Jobs integration for comprehensive job search
+- Automated email notifications for new opportunities
+- Export results to CSV format
+- Configurable search parameters (keywords, location, etc.)
+- Automated scheduling via GitHub Actions
+- Data deduplication and filtering
 
-### IMPORTANT NOTE
+## 📋 Requirements
 
-If you are using this application, please be aware that LinkedIn does not allow scraping of its website. Use this application at your own risk. It's recommended to use proxy servers to avoid getting blocked by LinkedIn (more on proxy servers below).
+- Python 3.11+
+- Gmail account with App Password (for email notifications)
+- Required Python packages (see `requirements.txt`)
 
-### Prerequisites
+## 🛠️ Installation
 
-- Python 3.6 or higher
-- Flask
-- Requests
-- BeautifulSoup
-- Pandas
-- SQLite3
-- Pysocks
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/jobscraper.git
+   cd jobscraper
+   ```
 
-### Installation
+2. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-1. Clone the repository to your local machine.
-2. Install the required packages using pip: `pip install -r requirements.txt`
-3. Create a `config.json` file in the root directory of the project. See the `config.json` section below for details on the configuration options. Config_example.json is provided as an example, feel free to use it as a template.
-4. Run the scraper using the command `python main.py`. Note: run this first first to populate the database with job postings prior to running app.py.
-4. Run the application using the command `python app.py`.
-5. Open a web browser and navigate to `http://127.0.0.1:5000` to view the job postings.
+3. **Set up environment variables**
+   Create a `.env` file or set the following environment variables:
+   ```
+   GMAIL_PASSWORD=your_gmail_app_password
+   GMAIL_EMAIL=your_email@gmail.com
+   RECIPIENT_EMAIL=recipient@example.com
+   ```
 
-### Usage
+## 🔧 Configuration
 
-The application consists of two main components: the scraper and the web interface.
+### Gmail Setup for Email Notifications
 
-#### Scraper
+1. Enable 2-Factor Authentication on your Gmail account
+2. Generate an App Password:
+   - Go to Google Account Settings → Security → 2-Step Verification → App passwords
+   - Generate a new app password for "Mail"
+   - Use this 16-character password as your `GMAIL_PASSWORD`
 
-The scraper is implemented in `main.py`. It scrapes job postings from LinkedIn based on the search queries and filters specified in the `config.json` file. The scraper removes duplicate and irrelevant job postings based on the specified keywords and stores the remaining job postings in a SQLite database.
+### GitHub Actions Setup (Optional)
 
-To run the scraper, execute the following command:
+For automated scraping, add these secrets to your GitHub repository:
 
-```
+- `GMAIL_PASSWORD`: Your Gmail app password
+- `GMAIL_EMAIL`: Your Gmail address
+- `RECIPIENT_EMAIL`: Email address to receive notifications
+
+Go to Settings → Secrets and variables → Actions → New repository secret
+
+## 📊 Usage
+
+### Basic Usage
+```bash
 python main.py
 ```
 
-#### Web Interface
+## 📁 Output
 
-The web interface is implemented using Flask in `app.py`. It provides a simple interface to view the job postings stored in the SQLite database. Users can mark job postings as applied, rejected, interview, or hidden, and the changes will be saved in the database.
+The scraper generates:
+- `jobs_YYYY-MM-DD.csv`: Daily job listings in CSV format
+- Console output with job count and summary
+- Email notifications with job highlights (if configured)
 
-When the job is marked as "applied" it will be highlighted in light blue so that it's obvious at a glance which jobs are applied to. "Rejecetd" will mark the job in red, whereas "Interview" will mark the job in green. Upon clicking "Hide" the job will dissappear from the list. There's currently no functionality to reverse these actions (i.e. unhine, un-apply, etc). To reverse it you'd have to go to the database and change values in applied, hidden, interview, or rejected columns.
+## ⚙️ GitHub Actions Workflow
 
-To run the web interface, execute the following command:
+The included workflow (`.github/workflows/god-give-me-jobs.yml`) automatically:
+- Runs every hour to check for new jobs
+- Triggers on pushes to main branch
+- Sends email notifications for new findings
+- Stores results as workflow artifacts
+
+## 📈 Example Output
 
 ```
-python app.py
+Found 25 new jobs for 'python developer' in 'remote'
+Jobs saved to: jobs_2025-06-25.csv
+Email notification sent to: recipient@example.com
+
+Top Jobs Found:
+- Senior Python Developer at TechCorp (Remote) - $120k-150k
+- Python Backend Engineer at StartupXYZ (San Francisco) - $100k-130k
+- Full Stack Python Developer at BigTech (New York) - $110k-140k
 ```
 
-Then, open a web browser and navigate to `http://127.0.0.1:5000` to view the job postings.
+#### Email sent:
+![截圖 2025-06-25 下午4 37 01](https://github.com/user-attachments/assets/7167b0f4-6bf0-4612-9bbe-a1881e981851)
 
-### Configuration
+## 🤝 Contributing
 
-The `config.json` file contains the configuration options for the scraper and the web interface. Below is a description of each option:
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-- `proxies`: The proxy settings for the requests library. Set the `http` and `https` keys with the appropriate proxy URLs.
-- `headers`: The headers to be sent with the requests. Set the `User-Agent` key with a valid user agent string. If you don't know your user agen, google "my user agent" and it will show it.
-- `OpenAI_API_KEY`: Your OpenAI API key. You can get it from your OpenAI dashboard.
-- `OpenAI_Model`: The name of the OpenAI model to use for cover letter generation. GPT-4 family of models produces best results, but also the most expensive one.
-- `resume_path`: Local path to your resume in PDF format (only PDF is supported at this time). For best results it's advised that your PDF resume is formatted in a way that's easy for the AI to parse. Use a single column format, avoid images. You may get unpredictable results if it's in a two-column format.
-- `search_queries`: An array of search query objects, each containing the following keys:
-  - `keywords`: The keywords to search for in the job title.
-  - `location`: The location to search for jobs.
-  - `f_WT`: The job type filter. Values are as follows:
-        -  0 - onsite
-        -  1 - hybrid
-        -  2 - remote
-        -  empty (no value) - any one of the above.
-- `desc_words`: An array of keywords to filter out job postings based on their description.
-- `title_include`: An array of keywords to filter job postings based on their title. Keep *only* jobs that have at least one of the words from 'title_words' in its title. Leave empty if you don't want to filter by title.
-- `title_exclude`: An array of keywords to filter job postings based on their title. Discard jobs that have ANY of the word from 'title_words' in its title. Leave empty if you don't want to filter by title.
-- `company_exclude`: An array of keywords to filter job postings based on the company name. Discard jobs come from a certain company because life is too short to work for assholes.
-- `languages`: Script will auto-detect the language from the description. If the language is not in this list, the job will be discarded. Leave empty if you don't want to filter by language. Use "en" for English, "de" for German, "fr" for French, "es" for Spanish, etc. See documentation for langdetect for more details.
-- `timespan`: The time range for the job postings. "r604800" for the past week, "r84600" for the last 24 hours. Basically "r" plus 60 * 60 * 24 * <number of days>.
-- `jobs_tablename`: The name of the table in the SQLite database where the job postings will be stored.
-- `filtered_jobs_tablename`: The name of the table in the SQLite database where the filtered job postings will be stored.
-- `db_path`: The path to the SQLite database file.
-- `pages_to_scrape`: The number of pages to scrape for each search query.
-- `rounds`: The number of times to run the scraper. LinkedIn doesn't always show the same results for the same search query, so running the scraper multiple times will increase the number of job postings scraped. I set up a cron job that runs every hour during the day.
-- `days_toscrape`: The number of days to scrape. The scraper will ignore job postings older than this number of days.
+## 📄 License
 
-### What remains to be done
+This project maintains the same license as the original repository.
 
-- [ ] Add functionality to unhide and un-apply jobs.
-- [ ] Add functionality to sort jobs by date added to the databse. Current sorting is by date posted on LinkedIn. Some jobs (~1-5%) are not being picked up by the search (and as such this scraper) until days after they are posted. This is a known issue with LinkedIn and there's nothing I can do about it, however sorting jobs by dated added to the database will make it easier to find those jobs.
-- [ ] Add front end functionality to configure search, and execute that search from UI. Currently configuration is done in json file and search is executed from command line.
+## 🙏 Acknowledgments
 
+- Original repository by [cwwmbm](https://github.com/cwwmbm/)
+- Enhanced with Google scraping and email functionality
+- Built with Python, BeautifulSoup, and Selenium
 
-### Contributing
+## 🐛 Issues & Support
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+If you encounter any issues or have questions:
+1. Check the existing issues in the original repository
+2. Create a new issue with detailed information
+3. Include error messages and environment details
 
-### License
+---
 
-This project is licensed under the MIT License.X
-Write README.md file for this project. Make it detailed as possible.
-X
+**Note**: This is a fork of the original linkedincraper with additional features. Please respect the terms of service of job boards when scraping data.
