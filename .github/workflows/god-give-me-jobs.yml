@@ -17,6 +17,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Check GMAIL_PASSWORD availability
+        run: |
+          if [ -z "${GMAIL_PASSWORD}" ]; then
+            echo "❌ GMAIL_PASSWORD is NOT set!"
+            exit 1
+          else
+            echo "✅ GMAIL_PASSWORD is set!"
+          fi
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -29,3 +38,5 @@ jobs:
 
       - name: Run script
         run: python main.py
+        env:
+          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
