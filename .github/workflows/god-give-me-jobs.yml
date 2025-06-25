@@ -1,8 +1,10 @@
 name: Run Python Script
 
 on:
+  push:
+    branches: [main]     # Trigger on push to main
   schedule:
-    - cron: '0 * * * *'  # runs at minute 0 of every hour (UTC)
+    - cron: '0 * * * *'  # Trigger every hour (UTC)
 
 jobs:
   run-script:
