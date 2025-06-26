@@ -403,6 +403,9 @@ def send_mail(joblist):
         html_content = f"<h2>{sum(len(jobs) for jobs in groups.values())} New Job(s) Found</h2>"
 
         for source, jobs in groups.items():
+            # Sort the jobs by date (newest first)
+            jobs.sort(key=lambda x: x['date'], reverse=True)
+
             plain_text += f"== {source} ({len(jobs)} job(s)) ==\n"
             html_content += f"<h3>{source} ({len(jobs)} job{'s' if len(jobs) > 1 else ''})</h3><ul>"
 
