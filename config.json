@@ -30,7 +30,7 @@
   ],
   "title_exclude": ["tax"],
   "title_include": ["python", "developer", "backend", "BE", "engineer", "system", "embedded", "cloud", "os", "mobile", "front end", "frontend", "apple", "swift", "c++"],
-  "company_exclude": ["ClickJobs.io"],
+  "company_exclude": ["ClickJobs.io", "Lensa"],
   "languages": ["en"],
   "timespan": "r84600",
   "jobs_tablename": "jobs",
