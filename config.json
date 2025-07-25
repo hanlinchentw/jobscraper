@@ -11,7 +11,9 @@
   "resume_path": "full local path to your resume in PDF format",
 
   "search_queries": [    
+    {"keywords": "software intern", "location": "United States", "f_WT": ""},
     {"keywords": "software engineer intern", "location": "United States", "f_WT": ""},
+    {"keywords": "system intern", "location": "United States", "f_WT": ""},
     {"keywords": "2026 summer intern", "location": "United States", "f_WT": ""},
     {"keywords": "2026 software intern", "location": "United States", "f_WT": ""},
     {"keywords": "google software intern", "location": "United States", "f_WT": ""},
@@ -21,7 +23,7 @@
     {"keywords": "apple embedded intern", "location": "United States", "f_WT": ""},
     {"keywords": "Nvidia software intern", "location": "United States", "f_WT": ""},
     {"keywords": "Nvidia system intern", "location": "United States", "f_WT": ""},
-    {"keywords": "Nvidia embedded intern", "location": "United States", "f_WT": ""}
+    {"keywords": "Nvidia embedded intern", "location": "United States", "f_WT": ""},
   ],
   "desc_words": [
     "agriculture", "farm", "food safety", "manufacture", "manufacturing", "Bilingual", "chemistry", "FDA", "ICH Guideline", "21 CFR 210",
@@ -30,7 +32,7 @@
   ],
   "title_exclude": ["tax", "audit", "accounting"],
   "title_include": ["python", "developer", "backend", "BE", "engineer", "system", "embedded", "cloud", "os", "mobile", "front end", "frontend", "apple", "swift", "c++"],
-  "company_exclude": ["ClickJobs.io", "Lensa"],
+  "company_exclude": ["ClickJobs.io", "Lensa", "Jobright.ai"],
   "languages": ["en"],
   "timespan": "r84600",
   "jobs_tablename": "jobs",
