@@ -30,16 +30,16 @@
     "biological sciences", "clinical research", "clinical trials", "drug safety", "ISO 9001", "ISO9001", "Life Sciences", "Biotech", "safety standards", "gt.school", "degree in accounting", "degree in Finance", "ISQM", "ISQM1",
     "QA/QC", "Electrical Engineering", "IS09001"
   ],
-  "title_exclude": ["tax", "audit", "accounting"],
-  "title_include": ["python", "developer", "backend", "BE", "engineer", "system", "embedded", "cloud", "os", "mobile", "front end", "frontend", "apple", "swift", "c++"],
+  "title_exclude": ["tax", "audit", "accounting", "civic", "chemical"],
+  "title_include": ["software", "python", "developer", "backend", "BE", "engineer", "system", "embedded", "cloud", "os", "mobile", "front end", "frontend", "apple", "swift", "c++"],
   "company_exclude": ["ClickJobs.io", "Lensa", "Jobright.ai"],
   "languages": ["en"],
   "timespan": "r84600",
   "jobs_tablename": "jobs",
   "filtered_jobs_tablename": "filtered_jobs",
   "db_path": "./data/my_database.db",
-  "pages_to_scrape": 20,
-  "rounds": 2,
+  "pages_to_scrape": 30,
+  "rounds": 3,
   "days_to_scrape": 5,
   "app_table": "jobs"
 }
