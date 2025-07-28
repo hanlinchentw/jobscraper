@@ -12,10 +12,10 @@
 
   "search_queries": [    
     {"keywords": "software intern", "location": "United States", "f_WT": ""},
-    {"keywords": "software engineer intern", "location": "United States", "f_WT": ""},
+    {"keywords": "software engineer intern NOT Jobright.ai", "location": "United States", "f_WT": ""},
     {"keywords": "system intern", "location": "United States", "f_WT": ""},
     {"keywords": "2026 summer intern", "location": "United States", "f_WT": ""},
-    {"keywords": "2026 software intern", "location": "United States", "f_WT": ""},
+    {"keywords": "2026 software intern NOT Jobright.ai", "location": "United States", "f_WT": ""},
     {"keywords": "google software intern", "location": "United States", "f_WT": ""},
     {"keywords": "gooogle system intern", "location": "United States", "f_WT": ""},
     {"keywords": "apple software intern", "location": "United States", "f_WT": ""},
