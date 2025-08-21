@@ -30,7 +30,7 @@
     "biological sciences", "clinical research", "clinical trials", "drug safety", "ISO 9001", "ISO9001", "Life Sciences", "Biotech", "safety standards", "gt.school", "degree in accounting", "degree in Finance", "ISQM", "ISQM1",
     "QA/QC", "Electrical Engineering", "IS09001"
   ],
-  "title_exclude": ["tax", "audit", "accounting", "civic", "chemical"],
+  "title_exclude": ["tax", "audit", "accounting", "civic", "chemical", "TikTok", "ByteDance"],
   "title_include": ["software", "python", "developer", "backend", "BE", "engineer", "system", "embedded", "cloud", "os", "mobile", "front end", "frontend", "apple", "swift", "c++"],
   "company_exclude": ["ClickJobs.io", "Lensa", "Jobright.ai"],
   "languages": ["en"],
