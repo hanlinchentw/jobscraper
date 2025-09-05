@@ -32,7 +32,7 @@
   ],
   "title_exclude": ["tax", "audit", "accounting", "civic", "chemical"],
   "title_include": ["software", "python", "developer", "backend", "BE", "engineer", "system", "embedded", "cloud", "os", "mobile", "front end", "frontend", "apple", "swift", "c++"],
-  "company_exclude": ["ClickJobs.io", "Lensa", "Jobright.ai", "TikTok", "ByteDance"],
+  "company_exclude": ["ClickJobs.io", "Lensa", "Jobright.ai", "TikTok", "ByteDance", "Jobs via Dice"],
   "languages": ["en"],
   "timespan": "r84600",
   "jobs_tablename": "jobs",
