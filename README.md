@@ -1,6 +1,6 @@
 # JobScraper - Enhanced Fork
 
-A Python-based job scraping tool that collects job listings from multiple sources and sends automated email notifications. This is an enhanced fork of [cwwmbm/linkedinscraper](https://github.com/cwwmbm/linkedinscraper) with additional features for Google job search scraping and email notifications.
+A Python-based job scraping tool that collects job listings from multiple sources and sends automated email notifications. This is an enhanced fork of [cwwmbm/linkedinscraper](https://github.com/cwwmbm/linkedinscraper) with additional features for Google job search scraping and email notifications..
 
 ## ✨ New Features Added
 
