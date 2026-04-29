@@ -11,19 +11,7 @@
   "resume_path": "full local path to your resume in PDF format",
 
   "search_queries": [    
-    {"keywords": "software intern", "location": "United States", "f_WT": ""},
-    {"keywords": "software engineer intern NOT Jobright.ai", "location": "United States", "f_WT": ""},
-    {"keywords": "system intern", "location": "United States", "f_WT": ""},
-    {"keywords": "2026 summer intern", "location": "United States", "f_WT": ""},
-    {"keywords": "2026 software intern NOT Jobright.ai", "location": "United States", "f_WT": ""},
-    {"keywords": "google software intern", "location": "United States", "f_WT": ""},
-    {"keywords": "gooogle system intern", "location": "United States", "f_WT": ""},
-    {"keywords": "apple software intern", "location": "United States", "f_WT": ""},
-    {"keywords": "apple system intern", "location": "United States", "f_WT": ""},
-    {"keywords": "apple embedded intern", "location": "United States", "f_WT": ""},
-    {"keywords": "Nvidia software intern", "location": "United States", "f_WT": ""},
-    {"keywords": "Nvidia system intern", "location": "United States", "f_WT": ""},
-    {"keywords": "Nvidia embedded intern", "location": "United States", "f_WT": ""}
+    {"keywords": "product designer", "location": "United States", "f_WT": ""},
   ],
   "desc_words": [
     "agriculture", "farm", "food safety", "manufacture", "manufacturing", "Bilingual", "chemistry", "FDA", "ICH Guideline", "21 CFR 210",
@@ -31,7 +19,7 @@
     "QA/QC", "Electrical Engineering", "IS09001"
   ],
   "title_exclude": ["Field", "Senior", "Grid", "Power", "Industrial", "Civil", "Structural", "Mechanical", "Electrical", "tax", "audit", "accounting", "civic", "chemical"],
-  "title_include": ["software", "python", "developer", "backend", "BE", "engineer", "system", "embedded", "cloud", "os", "mobile", "front end", "frontend", "apple", "swift", "c++"],
+  "title_include": ["software", "mobile", "front end", "frontend", "apple", "google"],
   "company_exclude": ["ClickJobs.io", "Lensa", "Jobright.ai", "TikTok", "ByteDance", "Jobs via Dice"],
   "languages": ["en"],
   "timespan": "r84600",
