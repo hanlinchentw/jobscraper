@@ -12,6 +12,8 @@
 
   "search_queries": [    
     {"keywords": "product designer", "location": "United States", "f_WT": ""},
+    {"keywords": "UI/UX designer", "location": "United States", "f_WT": ""},
+    {"keywords": "UX designer", "location": "United States", "f_WT": ""}
   ],
   "desc_words": [
     "agriculture", "farm", "food safety", "manufacture", "manufacturing", "Bilingual", "chemistry", "FDA", "ICH Guideline", "21 CFR 210",
