@@ -26,8 +26,7 @@ def get_google_jobs():
     options.add_argument("--headless")
     driver = webdriver.Chrome(options=options)
 
-    url = ("https://www.google.com/about/careers/applications/jobs/results/"
-           "?category=SOFTWARE_ENGINEERING&jex=ENTRY_LEVEL&target_level=INTERN_AND_APPRENTICE")
+    url = ("https://www.google.com/about/careers/applications/jobs/results?q=%22Product%20Designer%22&location=United%20States#!t=jo&jid=127025001&")
     driver.get(url)
     tm.sleep(3)  # Wait for JS to load; increase if needed
 
