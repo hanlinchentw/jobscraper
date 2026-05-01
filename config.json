@@ -21,7 +21,7 @@
     "QA/QC", "Electrical Engineering", "IS09001"
   ],
   "title_exclude": ["Field", "Senior", "Grid", "Power", "Industrial", "Civil", "Structural", "Mechanical", "Electrical", "tax", "audit", "accounting", "civic", "chemical"],
-  "title_include": ["Product", "Designer", "UI/UX", "UI", "UX", "apple", "google"],
+  "title_include": ["Product Designer", "UI/UX", "UI", "UX", "apple", "google"],
   "company_exclude": ["ClickJobs.io", "Lensa", "Jobright.ai", "TikTok", "ByteDance", "Jobs via Dice"],
   "languages": ["en"],
   "timespan": "r84600",
